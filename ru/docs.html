@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ru" data-page="docs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Документация Open Defender</title>
+  <meta name="description" content="Установка Open Defender на Linux, настройка мониторов и eBPF, экспорт событий и команды CLI.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Документация Open Defender">
+  <meta property="og:description" content="Установка Open Defender на Linux, настройка мониторов и eBPF, экспорт событий и команды CLI.">
+  <link rel="icon" href="../assets/open-defender.webp" type="image/webp">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/language.js"></script>
+</head>
+<body id="top">
+  <a class="skip-link" href="#main">К содержанию</a>
+  <header class="site-header">
+    <div class="wrap header-layout">
+      <a class="brand" href="index.html"><img src="../assets/open-defender.webp" alt="" width="32" height="32">Open Defender</a>
+      <nav class="site-nav" aria-label="Навигация по проекту">
+        <a href="index.html">Обзор</a>
+        <a href="docs.html" aria-current="page"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 4.2C6.3 2.9 4.5 2.6 1.5 3v9.5c3-.4 4.8-.1 6.5 1.2 1.7-1.3 3.5-1.6 6.5-1.2V3c-3-.4-4.8-.1-6.5 1.2V14"/></svg>Документация</a>
+        <a href="https://github.com/fridalif/open-defender/releases"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 1.5v8m-3-3 3 3 3-3M2 10v3.5h12V10"/></svg>Релизы</a>
+        <a href="https://github.com/fridalif/open-defender"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.64 7.64 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+      </nav>
+      <nav class="language-nav" aria-label="Язык">
+        <svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5"/><ellipse cx="8" cy="8" rx="2.7" ry="6.5"/><path d="M1.5 8h13"/></svg>
+        <a href="../docs.html?lang=en" hreflang="en" lang="en" aria-label="English">EN</a>
+        <a href="../ru/docs.html" hreflang="ru" lang="ru" aria-label="Русский" aria-current="true">RU</a>
+        <a href="../zh-cn/docs.html" hreflang="zh-CN" lang="zh-CN" aria-label="简体中文">中文</a>
+      </nav>
+    </div>
+  </header>
+  <main class="section docs" id="main">
+    <div class="wrap">
+      <h1 class="docs-heading">Документация Open Defender</h1>
+      <p class="intro">Установка, настройка и эксплуатация агента Open Defender на Linux.</p>
+      <div class="docs-layout">
+        <nav class="docs-nav" aria-label="На этой странице">
+          <p>На этой странице</p>
+          <ul>
+            <li><a href="#quickstart">Быстрый старт</a></li>
+            <li><a href="#install">Управление службой</a></li>
+            <li><a href="#config">Конфигурация</a></li>
+            <li><a href="#monitors">Мониторы</a></li>
+            <li><a href="#network-antirecon">Сетевой AntiRecon</a></li>
+            <li><a href="#commands">Контроль команд</a></li>
+            <li><a href="#grub">Настройка BPF LSM</a></li>
+            <li><a href="#export">Экспорт событий</a></li>
+            <li><a href="#protocol">Протокол экспорта</a></li>
+            <li><a href="#cli">Команды CLI</a></li>
+            <li><a href="#update">Обновление</a></li>
+          </ul>
+        </nav>
+        <article class="docs-content">
+          <h2 id="quickstart">Быстрый старт</h2>
+          <p>Для установки потребуется Linux с systemd. Скачайте бинарник из <a href="https://github.com/fridalif/open-defender/releases">релизов GitHub</a>. Команды ниже определяют архитектуру и помещают подходящий бинарник в <code>/usr/bin/open-defender</code>.</p>
+          <pre tabindex="0"><code>(
+  ARCH=$(uname -m)
+  case "$ARCH" in
+    x86_64)        ARCH=amd64 ;;
+    i386|i686)     ARCH=386 ;;
+    aarch64|arm64) ARCH=arm64 ;;
+    armv7l)        ARCH=arm32 ;;
+    *) echo "Неизвестная архитектура: $ARCH"; exit 1 ;;
+  esac
+  sudo curl -fL -o /usr/bin/open-defender \
+    "https://github.com/fridalif/open-defender/releases/latest/download/open-defender_$ARCH" &amp;&amp;
+    sudo chmod +x /usr/bin/open-defender
+)</code></pre>
+          <p>Установите и запустите службу, проверьте конфигурацию и выведите список включённых мониторов.</p>
+          <pre tabindex="0"><code>sudo open-defender -i
+open-defender -t
+open-defender -s</code></pre>
+
+          <h2 id="install">Управление службой</h2>
+          <p>Проверьте состояние службы, при необходимости перезапустите её или откройте журнал.</p>
+          <pre tabindex="0"><code>systemctl status open-defender
+sudo systemctl restart open-defender
+journalctl -u open-defender -f</code></pre>
+
+          <h2 id="config">Конфигурация</h2>
+          <p>Все настройки хранятся в&nbsp;YAML-файле <code>/etc/open-defender/config.yaml</code>. Каждый монитор задаёт движок получения событий, источник и&nbsp;пороги срабатывания.</p>
+
+          <h3 id="modes">Режимы монитора</h3>
+          <ul>
+            <li><code>blocker</code> &mdash; обнаруживает и&nbsp;блокирует источник атаки (бан по&nbsp;времени).</li>
+            <li><code>logger</code> &mdash; только фиксирует события, без блокировки.</li>
+            <li><code>disabled</code> &mdash; монитор выключен и&nbsp;не&nbsp;запускается.</li>
+          </ul>
+
+          <h3 id="params">Ключевые параметры</h3>
+          <ul>
+            <li><code>engine</code> &mdash; источник событий: <code>syslog</code>, <code>journal</code> или <code>docker</code>.</li>
+            <li><code>log_path</code> / <code>unit_name</code> &mdash; файл лога для <code>syslog</code> или юнит для <code>journal</code>/<code>docker</code>.</li>
+            <li><code>pattern</code> &mdash; регулярное выражение с&nbsp;обязательной группой <code>(?P&lt;ip&gt;...)</code>.</li>
+            <li><code>tries</code> / <code>window_seconds</code> / <code>ban_seconds</code> &mdash; порог попыток, окно и&nbsp;длительность бана.</li>
+            <li><code>ip_whitelist</code> &mdash; адреса, которые никогда не&nbsp;блокируются.</li>
+            <li>Для <code>resource_monitor</code> &mdash; пороги <code>warning</code>/<code>alert</code> по&nbsp;CPU и&nbsp;RAM (нулевые значения выключают лимит).</li>
+          </ul>
+
+          <pre tabindex="0"><code>sudo nano /etc/open-defender/config.yaml</code></pre>
+
+          <p>После правок всегда запускайте <code>open-defender -t</code> &mdash; конфиг только читается и&nbsp;никогда не&nbsp;перезаписывается, так что проверка безопасна на&nbsp;живой установке.</p>
+
+          <h2 id="monitors">Мониторы</h2>
+          <p>Команда <code>open-defender -s</code> выводит включённые мониторы с&nbsp;их&nbsp;режимом, движком, источником и&nbsp;порогами. Выключенные (<code>disabled</code>) перечисляются внизу и&nbsp;не&nbsp;запускаются.</p>
+
+          <pre tabindex="0"><code>/etc/open-defender/config.yaml
+
+MONITOR           MODE     ENGINE   SOURCE                   TRIES
+ssh_monitor       blocker  syslog   /var/log/auth.log        5 in 300s, ban 900s
+database_monitor  logger   journal  postgresql               5 in 300s
+resource_monitor  enabled  -        /var/log/open-defender/  cpu 60/90, ram 60/90
+
+disabled: web_recon_monitor, web_brute_monitor</code></pre>
+
+          <dl>
+            <dt><code>ssh_monitor</code></dt><dd>Анти-брутфорс SSH по&nbsp;логам входа.</dd>
+            <dt><code>web_recon_monitor</code></dt><dd>Обнаружение разведки веб-приложений (AntiRecon).</dd>
+            <dt><code>web_brute_monitor</code></dt><dd>Обнаружение брутфорса веб-приложений (AntiBrute).</dd>
+            <dt><code>database_monitor</code></dt><dd>Анти-брутфорс баз данных через syslog/journal/docker.</dd>
+            <dt><code>resource_monitor</code></dt><dd>Контроль CPU и&nbsp;RAM с&nbsp;топом процессов при перегрузке.</dd>
+            <dt><code>network_antirecon</code></dt><dd>eBPF-монитор сканирования TCP- и UDP-портов.</dd>
+            <dt><code>user_command_controller</code></dt><dd>Контроль и блокировка запуска команд пользователей через BPF LSM.</dd>
+          </dl>
+
+          <h2 id="network-antirecon">Сетевой AntiRecon</h2>
+          <p>Монитор <code>ebpf_monitors.network_antirecon</code> использует eBPF и XDP для обнаружения сканирования TCP- и UDP-портов. Он регистрирует обращение к порту из чёрного списка или достижение заданного числа разных портов с одного IP-адреса за окно наблюдения.</p>
+          <p>Пример настроек в <code>/etc/open-defender/config.yaml</code>:</p>
+          <pre tabindex="0"><code>ebpf_monitors:
+  network_antirecon:
+    mode: logger
+    ports_count: 10
+    window_seconds: 300
+    ban_seconds: 900
+    whitelist_ports: [22, 80, 443]
+    blacklist_ports: []</code></pre>
+          <p>Режим <code>logger</code> записывает события, <code>blocker</code> дополнительно блокирует IP на <code>ban_seconds</code>, а <code>disabled</code> выключает монитор. <code>ports_count</code> задаёт порог разных портов, <code>window_seconds</code> — длительность окна; нулевой порог отключает проверку по количеству портов. Порты из <code>whitelist_ports</code> игнорируются, обращение к порту из <code>blacklist_ports</code> вызывает срабатывание сразу. При пересечении списков приоритет у белого списка.</p>
+          <p>После изменения конфигурации выполните <code>open-defender -t</code> и <code>sudo open-defender -r</code>. Начните с режима logger и проверьте события перед включением блокировки.</p>
+
+          <h2 id="commands">Контроль исполнения команд</h2>
+          <p>Контроллер <code>ebpf_monitors.user_command_controller</code> проверяет попытки запуска исполняемых файлов через BPF LSM. Требуются Linux с BTF и активным BPF LSM, а также запуск агента от root в начальном пространстве пользователей хоста. При ошибке запуска или обновления контроллер отключается и записывает ошибку; остальные мониторы продолжают работать.</p>
+          <p>Добавьте настройки в <code>/etc/open-defender/config.yaml</code>. Пример регистрирует попытки пользователя с UID 1000 запустить curl или wget:</p>
+          <pre tabindex="0"><code>ebpf_monitors:
+  user_command_controller:
+    mode: logger
+    block_type: positive
+    target_users_ids: ["1000"]
+    target_commands: ["curl", "wget"]</code></pre>
+          <ul>
+            <li><code>mode: disabled</code> выключает контроллер; отсутствие секции также его выключает. <code>logger</code> разрешает выбранные попытки и отправляет события Critical (4); <code>blocker</code> отклоняет их с EPERM и отправляет события High (3).</li>
+            <li><code>target_users_ids</code> содержит UID в пространстве пользователей процесса, <code>target_commands</code> — имена исполняемых файлов. Пути приводятся к имени файла; максимальная длина имени — 63 байта. Встроенные команды оболочки без отдельного запуска исполняемого файла не отслеживаются.</li>
+            <li>Если оба списка заполнены, должны совпасть и пользователь, и команда. Пустой список не ограничивает соответствующий критерий; два пустых списка не дают совпадений.</li>
+            <li><code>block_type: positive</code> выбирает совпадения, <code>negative</code> — всё остальное. При двух пустых списках <code>negative</code> выбирает все попытки, кроме исключений.</li>
+          </ul>
+          <p>Root всегда исключён: реальный или эффективный UID 0 на хосте либо внутри пространства пользователей контейнера не блокируется и не регистрируется, даже если указан в списке. Событие в режиме logger означает попытку, а не подтверждение успешного запуска.</p>
+          <p>Неизвестные пространства пользователей или монтирования временно пропускают попытки без событий. Обнаружение выполняется перед подключением и затем каждые 150 секунд; для каждого обнаруженного пространства предусмотрены ещё 150 секунд на подготовку. Это относится и к пространствам, существовавшим при запуске, и к каждому контейнеру с отдельным пространством монтирования. Политика включается, когда оба пространства готовы.</p>
+          <p>После изменения конфигурации проверьте её и перезапустите сервис. Сначала проверьте правило в режиме logger, затем при необходимости включите blocker.</p>
+          <pre tabindex="0"><code>open-defender -t
+sudo open-defender -r
+journalctl -u open-defender -f</code></pre>
+
+          <h3 id="grub">Включение BPF LSM через GRUB</h3>
+          <p>Если контроллер не подключается, проверьте наличие BPF LSM и поддержку ядром. Отсутствие файла LSM может означать, что securityfs не смонтирована или функция недоступна.</p>
+          <pre tabindex="0"><code>cat /sys/kernel/security/lsm
+cat /proc/cmdline
+grep CONFIG_BPF_LSM /boot/config-$(uname -r)</code></pre>
+          <p>Если в списке уже есть <code>bpf</code>, менять GRUB не нужно. Для работы требуется поддержка ядра <code>CONFIG_BPF_LSM=y</code>; если конфигурация ядра недоступна по этому пути, проверьте её способом, предусмотренным вашим дистрибутивом.</p>
+          <p>Перед изменениями сохраните резервную копию настроек и убедитесь, что есть доступ к консоли восстановления. Проверьте <code>/etc/default/grub</code> и файлы в <code>/etc/default/grub.d/</code>. Если параметр <code>lsm=</code> уже задан, добавьте <code>bpf</code> к его списку, сохранив существующие модули и остальные параметры. Иначе добавьте один параметр <code>lsm=</code> со списком из <code>/sys/kernel/security/lsm</code> и добавленным <code>,bpf</code> в действующее значение <code>GRUB_CMDLINE_LINUX</code>. Не задавайте несколько параметров <code>lsm=</code>.</p>
+          <p>Например, если текущий список — <code>lockdown,yama,integrity,apparmor</code>, а других параметров в строке нет, значение может выглядеть так (используйте список своей системы):</p>
+          <pre tabindex="0"><code>GRUB_CMDLINE_LINUX="lsm=lockdown,yama,integrity,apparmor,bpf"</code></pre>
+          <p>На Debian и Ubuntu пересоберите конфигурацию, затем перезагрузитесь. В других дистрибутивах команда и путь конфигурации могут отличаться; используйте инструкцию своей системы.</p>
+          <pre tabindex="0"><code>sudo update-grub
+sudo reboot
+# После перезагрузки:
+cat /proc/cmdline
+cat /sys/kernel/security/lsm
+journalctl -u open-defender -b</code></pre>
+          <p>Убедитесь, что в активном списке появился <code>bpf</code>, и проверьте журнал сервиса на ошибки подключения контроллера.</p>
+
+          <h2 id="export">Экспорт событий</h2>
+          <p>Open Defender умеет отправлять события в&nbsp;<a href="https://light-defender.ru/light-defender-dashboard/">Light Defender Dashboard</a> по&nbsp;собственному протоколу поверх WebSocket. Это полностью опционально: без секции <code>exporter</code> агент работает автономно и&nbsp;никуда не&nbsp;ходит.</p>
+          <p>При <code>enabled: false</code> коннектор не&nbsp;запускается вовсе: события не&nbsp;ставятся в&nbsp;очередь и&nbsp;наружу не&nbsp;уходят. Все мониторы при этом продолжают работать как обычно.</p>
+
+          <h3>Настройка</h3>
+          <p>Секция <code>exporter</code> в&nbsp;<code>/etc/open-defender/config.yaml</code>. Значения <code>user_id</code>, <code>config_id</code> и&nbsp;публичный ключ выдаёт дашборд вместе с&nbsp;готовым конфигом.</p>
+
+          <pre tabindex="0"><code>exporter:
+  enabled: true
+  endpoint_address: connector.light-defender.ru
+  user_id: &lt;ваш user_id из дашборда&gt;
+  config_id: &lt;ваш config_id из дашборда&gt;
+  endpoint_rsa_public_key: &lt;публичный ключ дашборда, base64&gt;</code></pre>
+
+          <ul>
+            <li><code>enabled</code> &mdash; включает коннектор.</li>
+            <li><code>endpoint_address</code> &mdash; адрес WebSocket-эндпоинта дашборда.</li>
+            <li><code>user_id</code> / <code>config_id</code> &mdash; идентификаторы агента, уходят в&nbsp;каждом сообщении.</li>
+            <li><code>endpoint_rsa_public_key</code> &mdash; ключ, которым шифруется всё, что агент отправляет наверх.</li>
+          </ul>
+
+          <h3 id="encryption">Шифрование</h3>
+          <p>Одно WebSocket-соединение, каждый кадр в&nbsp;нём &mdash; зашифрованный JSON-конверт. Симметричный ключ шифруется RSA-OAEP/SHA-256, тело &mdash; AES-256-GCM.</p>
+
+          <pre tabindex="0"><code>[ RSA(aes_key) ][ nonce, 12 байт ][ ciphertext ]</code></pre>
+
+          <ul>
+            <li>Пара ключей агента &mdash; RSA-2048, генерируется на&nbsp;каждую сессию и&nbsp;никогда не&nbsp;пишется на&nbsp;диск.</li>
+            <li>Агент шифрует сообщения ключом дашборда, дашборд &mdash; сессионным ключом агента, который тот передаёт в&nbsp;<code>system/hello</code>.</li>
+            <li>После переподключения сессионный ключ другой, поэтому кадры прошлой сессии расшифровать уже нельзя.</li>
+          </ul>
+
+          <h3 id="protocol">Обмен сообщениями</h3>
+
+          <pre tabindex="0"><code>агент                                  дашборд
+    |                                        |
+    |  WebSocket, endpoint_address           |
+    |---------------------------------------&gt;|
+    |  system/hello                          |
+    |  сессионный публичный ключ агента      |
+    |---------------------------------------&gt;|
+    |          config/set_config             |  не позже
+    |&lt;---------------------------------------|  30 секунд
+    |  system/ack   ok | error               |
+    |---------------------------------------&gt;|
+  ==+============ сессия открыта ============+==
+    |  alert/raised   одно событие           |  без
+    |---------------------------------------&gt;|  подтверждений
+    |          config/get_config             |
+    |&lt;---------------------------------------|
+    |  config/config   текущий конфиг        |
+    |---------------------------------------&gt;|
+    |          ping, каждые 30 секунд        |
+    |&lt;---------------------------------------|
+    |  pong                                  |
+    |---------------------------------------&gt;|</code></pre>
+
+          <p>Порядок рукопожатия фиксирован: <code>hello</code>, затем <code>set_config</code>, затем <code>ack</code>. Дальше порядок свободный: агент шлёт события по&nbsp;мере их&nbsp;появления и&nbsp;отвечает на&nbsp;запросы дашборда.</p>
+
+          <p><strong>Типы сообщений</strong></p>
+          <ul>
+            <li><code>system/hello</code> (агент → дашборд) &mdash; открывает сессию и&nbsp;передаёт сессионный публичный ключ.</li>
+            <li><code>alert/raised</code> (агент → дашборд) &mdash; событие безопасности, одно на&nbsp;конверт. Подтверждения и&nbsp;повторной отправки нет.</li>
+            <li><code>config/config</code> (агент → дашборд) &mdash; текущий конфиг в&nbsp;ответ на&nbsp;<code>get_config</code>.</li>
+            <li><code>system/ack</code> (агент → дашборд) &mdash; результат задачи: <code>ok</code> или <code>error</code> с&nbsp;описанием.</li>
+            <li><code>config/set_config</code> (дашборд → агент) &mdash; новый конфиг. Секция <code>exporter</code> и&nbsp;белый список адресов машины сохраняются локальными.</li>
+            <li><code>config/get_config</code> (дашборд → агент) &mdash; запрос текущего конфига.</li>
+          </ul>
+
+          <h3 id="event">Структура события</h3>
+
+          <pre tabindex="0"><code>{
+  "version": 2,
+  "task_id": 0,
+  "service": "alert",
+  "operation": "raised",
+  "configuration_id": "...",
+  "user_id": "...",
+  "payload": {
+    "events": [
+      {
+        "source": "ssh_monitor",
+        "ip": "203.0.113.7",
+        "message": "ssh_monitor -&gt; found offenders ip ...",
+        "happened_at": "2026-07-24T10:15:00Z",
+        "details": { "engine": "syslog", "source": "/var/log/auth.log" }
+      }
+    ]
+  }
+}</code></pre>
+
+          <p>Поле <code>source</code> называет монитор: <code>ssh_monitor</code>, <code>web_brute_monitor</code>, <code>web_recon_monitor</code>, <code>database_monitor</code>, <code>network_antirecon</code>, <code>resource_monitor</code> или <code>ip_ban</code>. У&nbsp;<code>resource_monitor</code> дополнительно приходит <code>severity</code> и&nbsp;метрика с&nbsp;порогом.</p>
+
+          <h3 id="timing">Тайминги и лимиты</h3>
+          <ul>
+            <li>Подключение &mdash; 15 секунд, рукопожатие &mdash; 30 секунд на&nbsp;сообщение.</li>
+            <li>Чтение &mdash; 90 секунд, таймер обновляется каждым <code>ping</code> от&nbsp;сервера.</li>
+            <li>Максимальный размер кадра &mdash; 1 МБ.</li>
+            <li>Переподключение &mdash; 5 секунд, плюс 10 секунд за&nbsp;каждую неудачу, не&nbsp;больше 100 секунд. После успешного подключения счётчик сбрасывается.</li>
+            <li>Очередь на&nbsp;отправку &mdash; 1024 конверта. Если она переполнена, события отбрасываются: мониторы не&nbsp;ждут сеть никогда.</li>
+            <li>Недоступный эндпоинт не&nbsp;ломает защиту: агент просто повторяет попытки в&nbsp;фоне.</li>
+          </ul>
+
+          <p>Конфиг, приехавший от&nbsp;дашборда и&nbsp;отличающийся от&nbsp;текущего, записывается на&nbsp;диск и&nbsp;перезапускает мониторы: новая сессия, новая пара ключей. Локальная секция <code>exporter</code> при этом не&nbsp;затирается, а&nbsp;адреса самой машины остаются в&nbsp;белом списке, чтобы агент не&nbsp;забанил свой&nbsp;же сервер.</p>
+
+          <p>Полное описание протокола, всех полей и&nbsp;поведения при сбоях &mdash; в&nbsp;<a href="https://github.com/fridalif/open-defender/blob/main/CLIENT.ru.md">CLIENT.ru.md на&nbsp;GitHub</a>.</p>
+
+          <h2 id="cli">CLI-команды</h2>
+          <p>Полный набор флагов. Команды <code>-t</code>, <code>-s</code> и&nbsp;<code>-h</code> не&nbsp;требуют root, остальным нужны права суперпользователя.</p>
+
+          <pre tabindex="0"><code>Usage: open-defender [options]
+
+Options:
+  -i, --install    установить open-defender как systemd-сервис и запустить
+  -u, --update     обновить бинарник до последнего релиза с GitHub
+  -t, --test       проверить текущий конфиг и выйти
+  -s, --status     показать включённые мониторы и выйти
+  -r, --restart    перезапустить сервис open-defender
+  -h, --help       показать это сообщение</code></pre>
+
+          <h2 id="update">Обновление</h2>
+          <p>Флаг <code>-u</code> обновляет установленный бинарник до&nbsp;последнего релиза с&nbsp;GitHub. Версия берётся из&nbsp;<code>version.txt</code> репозитория, архитектура &mdash; из&nbsp;текущего бинарника.</p>
+
+          <pre tabindex="0"><code>sudo open-defender -u</code></pre>
+
+          <p>Команда предложит версию и&nbsp;архитектуру. После загрузки бинарника она перезапустит службу. Если новый бинарник не запустится, будет восстановлен предыдущий.</p>
+        </article>
+      </div>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="wrap">
+      <p class="footer-brand"><img src="../assets/light-defender.webp" width="40" height="40" alt="">Light Defender</p>
+      <div class="footer-links">
+        <a href="https://light-defender.ru/">Сайт Light Defender</a>
+        <a href="#top">В начало</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

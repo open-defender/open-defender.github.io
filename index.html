@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en" data-page="overview">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Open Defender — open-source Linux server protection</title>
+  <meta name="description" content="Open Defender is an open-source EDR agent for Linux with SSH, web and database protection, eBPF monitoring, and resource alerts.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Open Defender — open-source Linux server protection">
+  <meta property="og:description" content="Open Defender is an open-source EDR agent for Linux with SSH, web and database protection, eBPF monitoring, and resource alerts.">
+  <link rel="icon" href="assets/open-defender.webp" type="image/webp">
+  <link rel="stylesheet" href="assets/site.css">
+  <script src="assets/language.js"></script>
+</head>
+<body id="top">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-layout">
+      <a class="brand" href="index.html"><img src="assets/open-defender.webp" alt="" width="32" height="32">Open Defender</a>
+      <nav class="site-nav" aria-label="Project navigation">
+        <a href="index.html" aria-current="page">Overview</a>
+        <a href="docs.html"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 4.2C6.3 2.9 4.5 2.6 1.5 3v9.5c3-.4 4.8-.1 6.5 1.2 1.7-1.3 3.5-1.6 6.5-1.2V3c-3-.4-4.8-.1-6.5 1.2V14"/></svg>Documentation</a>
+        <a href="https://github.com/fridalif/open-defender/releases"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 1.5v8m-3-3 3 3 3-3M2 10v3.5h12V10"/></svg>Releases</a>
+        <a href="https://github.com/fridalif/open-defender"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.64 7.64 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+      </nav>
+      <nav class="language-nav" aria-label="Language">
+        <svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5"/><ellipse cx="8" cy="8" rx="2.7" ry="6.5"/><path d="M1.5 8h13"/></svg>
+        <a href="index.html?lang=en" hreflang="en" lang="en" aria-label="English" aria-current="true">EN</a>
+        <a href="ru/index.html" hreflang="ru" lang="ru" aria-label="Русский">RU</a>
+        <a href="zh-cn/index.html" hreflang="zh-CN" lang="zh-CN" aria-label="简体中文">中文</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap hero-layout">
+        <div>
+          <h1 id="hero-title">Linux server protection. <span>In one agent.</span></h1>
+          <p class="intro">Open Defender is an open-source EDR agent written in Go. It detects brute-force attempts against SSH, web apps and databases, monitors resources, and observes network and process activity with eBPF.</p>
+          <div class="actions">
+            <a class="button button-primary" href="docs.html#quickstart"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1.2" y="2" width="13.6" height="12" rx="1.5"/><path d="m4 5.5 2.5 2.5L4 10.5m4.4 0H12"/></svg>Quick start</a>
+            <a class="button" href="https://github.com/fridalif/open-defender/releases/latest"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 1.5v8m-3-3 3 3 3-3M2 10v3.5h12V10"/></svg>Download release</a>
+            <a class="button" href="https://github.com/fridalif/open-defender"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.64 7.64 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>Source code</a>
+          </div>
+          <ul class="project-facts">
+            <li><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1.5" y="2.5" width="13" height="4.5" rx="1"/><rect x="1.5" y="9" width="13" height="4.5" rx="1"/><path d="M4 4.75h.1M4 11.25h.1"/></svg>Linux + systemd</li>
+            <li><a href="https://github.com/fridalif/open-defender/blob/main/LICENSE"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 2v12m-3 0h6M2 4h12M3.5 4 1 9h5l-2.5-5Zm9 0L10 9h5l-2.5-5Z"/></svg>MIT license</a></li>
+          </ul>
+        </div>
+        <figure class="hero-figure">
+          <img src="assets/open-defender.webp" alt="" width="928" height="928" fetchpriority="high">
+        </figure>
+      </div>
+    </section>
+
+    <section class="section quickstart" id="quickstart" aria-labelledby="quick-title">
+      <div class="wrap quick-layout">
+        <div>
+          <h2 id="quick-title">Quick start</h2>
+          <p class="intro">Download the binary for your architecture and put it in <code>/usr/bin/open-defender</code>. Then install the systemd service, validate the configuration, and check which monitors are active.</p>
+          <p class="intro">Release builds <code>amd64</code> <code>386</code> <code>arm64</code> <code>arm32</code></p>
+          <div class="actions"><a class="button" href="docs.html#quickstart"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 4.2C6.3 2.9 4.5 2.6 1.5 3v9.5c3-.4 4.8-.1 6.5 1.2 1.7-1.3 3.5-1.6 6.5-1.2V3c-3-.4-4.8-.1-6.5 1.2V14"/></svg>Read the installation guide</a></div>
+        </div>
+        <figure class="terminal">
+          <figcaption><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1.2" y="2" width="13.6" height="12" rx="1.5"/><path d="m4 5.5 2.5 2.5L4 10.5m4.4 0H12"/></svg>Linux terminal</figcaption>
+          <pre tabindex="0"><code>sudo open-defender -i
+open-defender -t
+open-defender -s</code></pre>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="features-title">
+      <div class="wrap">
+        <h2 id="features-title">What Open Defender monitors</h2>
+        <p class="intro">The agent processes events locally. Set the event sources, thresholds, and allowlists in <code>/etc/open-defender/config.yaml</code>.</p>
+        <div class="card-grid">
+          <article class="card">
+            <h3>SSH brute force</h3>
+            <p>Counts failed logins and can temporarily block the source IP when it reaches the configured threshold.</p>
+          </article>
+          <article class="card">
+            <h3>Web applications</h3>
+            <p>Detects reconnaissance and brute-force patterns in web server logs. Allowlists help keep trusted addresses out of bans.</p>
+          </article>
+          <article class="card">
+            <h3>Databases</h3>
+            <p>Detects repeated authentication failures from syslog, the systemd journal, or Docker logs.</p>
+          </article>
+          <article class="card">
+            <h3>Resource usage</h3>
+            <p>Watches CPU and memory thresholds and reports the processes using the most resources under load.</p>
+          </article>
+          <article class="card">
+            <h3>eBPF monitoring</h3>
+            <p>Detects TCP and UDP port scanning with XDP. Command execution control uses BPF LSM on compatible kernels.</p>
+          </article>
+          <article class="card">
+            <h3>Event export</h3>
+            <p>Optionally sends events to Light Defender Dashboard over an encrypted WebSocket connection.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark" aria-labelledby="modes-title">
+      <div class="wrap info-layout">
+        <div>
+          <h2 id="modes-title">Choose how the agent responds</h2>
+          <p class="intro">SSH, web, database and compatible eBPF monitors can be configured separately. Use logging to see what your rules match before enabling blocking.</p>
+        </div>
+        <dl class="mode-list">
+          <div><dt><code>blocker</code></dt><dd>Detects events and enforces the monitor’s blocking rule.</dd></div>
+          <div><dt><code>logger</code></dt><dd>Records matching events while allowing the activity.</dd></div>
+          <div><dt><code>disabled</code></dt><dd>Leaves the monitor switched off.</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Code and community">
+      <div class="wrap community-layout">
+        <article class="community-panel">
+          <h2>Run locally or connect Dashboard</h2>
+          <p class="intro">Local detection and blocking keep running when Dashboard is unreachable. Enable the exporter to see events from several servers in one place and manage their agent configuration.</p>
+          <ul class="link-list">
+            <li><a href="https://light-defender.ru/light-defender-dashboard/"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6 3H3.5A1.5 1.5 0 0 0 2 4.5v8A1.5 1.5 0 0 0 3.5 14h8a1.5 1.5 0 0 0 1.5-1.5V10M9 2h5v5m0-5L7 9"/></svg>Light Defender Dashboard</a></li>
+            <li><a href="docs.html#export"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 4.2C6.3 2.9 4.5 2.6 1.5 3v9.5c3-.4 4.8-.1 6.5 1.2 1.7-1.3 3.5-1.6 6.5-1.2V3c-3-.4-4.8-.1-6.5 1.2V14"/></svg>Event export setup</a></li>
+          </ul>
+        </article>
+        <article class="community-panel">
+          <h2>Code and community</h2>
+          <p class="intro">Open Defender is distributed under the MIT license. Use GitHub Issues for bug reports and feature requests, or contribute through a pull request.</p>
+          <ul class="link-list">
+            <li><a href="https://github.com/fridalif/open-defender/issues"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.3"/><path d="M8 4.5v4m0 2.6h.01"/></svg>GitHub Issues</a></li>
+            <li><a href="https://github.com/fridalif/open-defender/pulls"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="4" cy="3" r="1.4"/><circle cx="4" cy="13" r="1.4"/><circle cx="12" cy="13" r="1.4"/><path d="M4 4.4v7.2m8 0V7a2.5 2.5 0 0 0-2.5-2.5H8l2-2m-2 2 2 2"/></svg>Pull requests</a></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="wrap">
+      <p class="footer-brand"><img src="assets/light-defender.webp" width="40" height="40" alt="">Light Defender</p>
+      <div class="footer-links">
+        <a href="https://light-defender.ru/">Light Defender website</a>
+        <a href="#top">Back to top</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

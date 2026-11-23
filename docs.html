@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en" data-page="docs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Open Defender documentation</title>
+  <meta name="description" content="Install Open Defender on Linux, configure monitors and eBPF, set up event export, and look up CLI commands.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Open Defender documentation">
+  <meta property="og:description" content="Install Open Defender on Linux, configure monitors and eBPF, set up event export, and look up CLI commands.">
+  <link rel="icon" href="assets/open-defender.webp" type="image/webp">
+  <link rel="stylesheet" href="assets/site.css">
+  <script src="assets/language.js"></script>
+</head>
+<body id="top">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-layout">
+      <a class="brand" href="index.html"><img src="assets/open-defender.webp" alt="" width="32" height="32">Open Defender</a>
+      <nav class="site-nav" aria-label="Project navigation">
+        <a href="index.html">Overview</a>
+        <a href="docs.html" aria-current="page"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 4.2C6.3 2.9 4.5 2.6 1.5 3v9.5c3-.4 4.8-.1 6.5 1.2 1.7-1.3 3.5-1.6 6.5-1.2V3c-3-.4-4.8-.1-6.5 1.2V14"/></svg>Documentation</a>
+        <a href="https://github.com/fridalif/open-defender/releases"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 1.5v8m-3-3 3 3 3-3M2 10v3.5h12V10"/></svg>Releases</a>
+        <a href="https://github.com/fridalif/open-defender"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.64 7.64 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+      </nav>
+      <nav class="language-nav" aria-label="Language">
+        <svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5"/><ellipse cx="8" cy="8" rx="2.7" ry="6.5"/><path d="M1.5 8h13"/></svg>
+        <a href="docs.html?lang=en" hreflang="en" lang="en" aria-label="English" aria-current="true">EN</a>
+        <a href="ru/docs.html" hreflang="ru" lang="ru" aria-label="Русский">RU</a>
+        <a href="zh-cn/docs.html" hreflang="zh-CN" lang="zh-CN" aria-label="简体中文">中文</a>
+      </nav>
+    </div>
+  </header>
+  <main class="section docs" id="main">
+    <div class="wrap">
+      <h1 class="docs-heading">Open Defender documentation</h1>
+      <p class="intro">Installation, configuration, and operations for the Open Defender Linux agent.</p>
+      <div class="docs-layout">
+        <nav class="docs-nav" aria-label="On this page">
+          <p>On this page</p>
+          <ul>
+            <li><a href="#quickstart">Quick start</a></li>
+            <li><a href="#install">Service management</a></li>
+            <li><a href="#config">Configuration</a></li>
+            <li><a href="#monitors">Monitors</a></li>
+            <li><a href="#network-antirecon">Network AntiRecon</a></li>
+            <li><a href="#commands">Command execution</a></li>
+            <li><a href="#grub">BPF LSM setup</a></li>
+            <li><a href="#export">Event export</a></li>
+            <li><a href="#protocol">Export protocol</a></li>
+            <li><a href="#cli">CLI commands</a></li>
+            <li><a href="#update">Updates</a></li>
+          </ul>
+        </nav>
+        <article class="docs-content">
+          <h2 id="quickstart">Quick start</h2>
+          <p>Open Defender runs on Linux with systemd. Download the matching binary from <a href="https://github.com/fridalif/open-defender/releases">GitHub Releases</a> or let the following commands detect your architecture and place the binary in <code>/usr/bin/open-defender</code>.</p>
+          <pre tabindex="0"><code>(
+  ARCH=$(uname -m)
+  case "$ARCH" in
+    x86_64)        ARCH=amd64 ;;
+    i386|i686)     ARCH=386 ;;
+    aarch64|arm64) ARCH=arm64 ;;
+    armv7l)        ARCH=arm32 ;;
+    *) echo "Unknown architecture: $ARCH"; exit 1 ;;
+  esac
+  sudo curl -fL -o /usr/bin/open-defender \
+    "https://github.com/fridalif/open-defender/releases/latest/download/open-defender_$ARCH" &amp;&amp;
+    sudo chmod +x /usr/bin/open-defender
+)</code></pre>
+          <p>Install and start the service, validate the configuration, then list the active monitors.</p>
+          <pre tabindex="0"><code>sudo open-defender -i
+open-defender -t
+open-defender -s</code></pre>
+
+          <h2 id="install">Service management</h2>
+          <p>Use systemd to check the service, restart it, or follow its journal. <code>sudo open-defender -r</code> also restarts the service.</p>
+          <pre tabindex="0"><code>systemctl status open-defender
+sudo systemctl restart open-defender
+journalctl -u open-defender -f</code></pre>
+
+          <h2 id="config">Configuration</h2>
+          <p>Agent settings live in <code>/etc/open-defender/config.yaml</code>. Configure the event source and thresholds for each monitor.</p>
+
+          <h3 id="modes">Monitor modes</h3>
+          <ul>
+            <li><code>blocker</code> detects events and applies the configured blocking rule.</li>
+            <li><code>logger</code> records matching events and lets the activity continue.</li>
+            <li><code>disabled</code> switches the monitor off.</li>
+          </ul>
+
+          <h3 id="params">Main settings</h3>
+          <ul>
+            <li><code>engine</code> selects <code>syslog</code>, <code>journal</code>, or <code>docker</code>.</li>
+            <li><code>log_path</code> is the syslog file. Use <code>unit_name</code> for a journal unit or Docker source.</li>
+            <li><code>pattern</code> is a regular expression with a named <code>(?P&lt;ip&gt;...)</code> group.</li>
+            <li><code>tries</code>, <code>window_seconds</code>, and <code>ban_seconds</code> set the threshold, observation window, and ban duration.</li>
+            <li><code>ip_whitelist</code> lists addresses that are exempt from blocking.</li>
+            <li><code>resource_monitor</code> uses <code>warning</code> and <code>alert</code> thresholds for CPU and memory. Use zero to disable a threshold.</li>
+          </ul>
+          <pre tabindex="0"><code>sudo nano /etc/open-defender/config.yaml</code></pre>
+          <p>Run <code>open-defender -t</code> after editing. It reads the configuration and reports validation errors without rewriting the file.</p>
+
+          <h2 id="monitors">Monitors</h2>
+          <p><code>open-defender -s</code> displays active monitors with their modes, engines, sources, and thresholds. Disabled monitors appear separately below the table.</p>
+          <pre tabindex="0"><code>/etc/open-defender/config.yaml
+
+MONITOR           MODE     ENGINE   SOURCE                   TRIES
+ssh_monitor       blocker  syslog   /var/log/auth.log        5 in 300s, ban 900s
+database_monitor  logger   journal  postgresql               5 in 300s
+resource_monitor  enabled  -        /var/log/open-defender/  cpu 60/90, ram 60/90
+
+disabled: web_recon_monitor, web_brute_monitor</code></pre>
+          <dl>
+            <dt><code>ssh_monitor</code></dt><dd>Detects SSH brute force from authentication logs.</dd>
+            <dt><code>web_recon_monitor</code></dt><dd>Detects reconnaissance against web applications.</dd>
+            <dt><code>web_brute_monitor</code></dt><dd>Detects brute-force attempts against web applications.</dd>
+            <dt><code>database_monitor</code></dt><dd>Detects database brute force from syslog, journal, or Docker logs.</dd>
+            <dt><code>resource_monitor</code></dt><dd>Tracks CPU and memory and reports the top consumers during overload.</dd>
+            <dt><code>network_antirecon</code></dt><dd>Detects TCP and UDP port scans with eBPF.</dd>
+            <dt><code>user_command_controller</code></dt><dd>Observes or blocks command execution through BPF LSM.</dd>
+          </dl>
+
+          <h2 id="network-antirecon">Network AntiRecon</h2>
+          <p><code>ebpf_monitors.network_antirecon</code> uses eBPF and XDP to detect scanning of TCP and UDP ports. A blocklisted port triggers an event immediately. Otherwise, the monitor counts distinct ports reached by a source IP during the observation window.</p>
+          <pre tabindex="0"><code>ebpf_monitors:
+  network_antirecon:
+    mode: logger
+    ports_count: 10
+    window_seconds: 300
+    ban_seconds: 900
+    whitelist_ports: [22, 80, 443]
+    blacklist_ports: []</code></pre>
+          <p><code>ports_count</code> sets the distinct-port threshold, with zero disabling that check. <code>whitelist_ports</code> takes priority over <code>blacklist_ports</code>. In <code>blocker</code> mode, the source IP is blocked for <code>ban_seconds</code>. Validate and restart after changing the settings. Start with <code>logger</code> to see which traffic matches.</p>
+
+          <h2 id="commands">Command execution control</h2>
+          <p><code>ebpf_monitors.user_command_controller</code> inspects executable launches through BPF LSM. It requires BTF, active BPF LSM, and an agent running as root in the host's initial user namespace. If the controller fails to attach or update, the agent logs the error, detaches the controller and keeps the other monitors running.</p>
+          <p>This example records attempts by UID 1000 to run <code>curl</code> or <code>wget</code>.</p>
+          <pre tabindex="0"><code>ebpf_monitors:
+  user_command_controller:
+    mode: logger
+    block_type: positive
+    target_users_ids: ["1000"]
+    target_commands: ["curl", "wget"]</code></pre>
+          <ul>
+            <li><code>disabled</code> or omitting the section switches the controller off. <code>logger</code> allows selected attempts and emits Critical (4) events. <code>blocker</code> denies them with <code>EPERM</code> and emits High (3) events.</li>
+            <li><code>target_users_ids</code> uses UIDs in the process's user namespace. <code>target_commands</code> uses executable basenames up to 63 bytes. Shell builtins without a separate execution are outside its scope.</li>
+            <li>When both lists are populated, the user and command must both match. An empty list leaves that criterion unrestricted. Two empty lists match nothing.</li>
+            <li><code>block_type: positive</code> selects matches. <code>negative</code> selects everything else, subject to the controller's exclusions.</li>
+          </ul>
+          <p>Root is excluded, including real or effective UID 0 on the host or in a container's user namespace. A logger event reports an attempt to execute a command.</p>
+          <p>Attempts in unknown user or mount namespaces pass through without events. The agent discovers namespaces before attaching and every 150 seconds thereafter, then waits another 150 seconds for each namespace to become ready. The policy activates when both namespaces are ready.</p>
+          <p>Validate the configuration and check the journal after restarting.</p>
+          <pre tabindex="0"><code>open-defender -t
+sudo open-defender -r
+journalctl -u open-defender -f</code></pre>
+
+          <h3 id="grub">Enable BPF LSM with GRUB</h3>
+          <p>Check whether the kernel supports BPF LSM and whether it is active. A missing LSM file can mean that securityfs is unmounted or that LSM information is unavailable.</p>
+          <pre tabindex="0"><code>cat /sys/kernel/security/lsm
+cat /proc/cmdline
+grep CONFIG_BPF_LSM /boot/config-$(uname -r)</code></pre>
+          <p>If <code>bpf</code> already appears in the active list, GRUB needs no changes. The kernel must have <code>CONFIG_BPF_LSM=y</code>. Use your distribution's instructions if the kernel configuration is stored elsewhere.</p>
+          <p>Back up the GRUB settings and confirm access to a recovery console. Check <code>/etc/default/grub</code> and <code>/etc/default/grub.d/</code>. If <code>lsm=</code> is already present, append <code>bpf</code> to that list. Otherwise, add one <code>lsm=</code> option to <code>GRUB_CMDLINE_LINUX</code> using the current list from <code>/sys/kernel/security/lsm</code> plus <code>bpf</code>. Keep the other kernel options.</p>
+          <p>For example, if the active list contains <code>lockdown,yama,integrity,apparmor</code> and this variable has no other options:</p>
+          <pre tabindex="0"><code>GRUB_CMDLINE_LINUX="lsm=lockdown,yama,integrity,apparmor,bpf"</code></pre>
+          <p>On Debian and Ubuntu, rebuild the GRUB configuration and reboot. Use the corresponding procedure for your distribution.</p>
+          <pre tabindex="0"><code>sudo update-grub
+sudo reboot
+# After reboot:
+cat /proc/cmdline
+cat /sys/kernel/security/lsm
+journalctl -u open-defender -b</code></pre>
+          <p>Confirm that <code>bpf</code> is active and check the service journal for attachment errors.</p>
+
+          <h2 id="export">Event export</h2>
+          <p>The optional exporter sends events to <a href="https://light-defender.ru/light-defender-dashboard/">Light Defender Dashboard</a> using an encrypted protocol over WebSocket. The agent works locally when the <code>exporter</code> section is absent or <code>enabled</code> is set to <code>false</code>.</p>
+          <h3>Setup</h3>
+          <p>Dashboard provides the agent identifiers and public key in the generated configuration.</p>
+          <pre tabindex="0"><code>exporter:
+  enabled: true
+  endpoint_address: connector.light-defender.ru
+  user_id: &lt;your Dashboard user_id&gt;
+  config_id: &lt;your Dashboard config_id&gt;
+  endpoint_rsa_public_key: &lt;Dashboard public key, base64&gt;</code></pre>
+          <ul>
+            <li><code>enabled</code> activates the connector.</li>
+            <li><code>endpoint_address</code> is the Dashboard WebSocket endpoint.</li>
+            <li><code>user_id</code> and <code>config_id</code> are included in each message.</li>
+            <li><code>endpoint_rsa_public_key</code> is the Dashboard key used to encrypt outbound messages.</li>
+          </ul>
+          <h3 id="encryption">Encryption</h3>
+          <p>Each WebSocket frame carries an encrypted JSON envelope. The body uses AES-256-GCM and the symmetric key uses RSA-OAEP/SHA-256.</p>
+          <pre tabindex="0"><code>[ RSA(aes_key) ][ nonce, 12 bytes ][ ciphertext ]</code></pre>
+          <p>The agent creates a new RSA-2048 key pair for each connection and provides its public key in <code>system/hello</code>. Dashboard uses that key for replies. The agent uses the Dashboard public key for outbound frames.</p>
+          <h3 id="protocol">Message exchange</h3>
+          <pre tabindex="0"><code>Agent                                Dashboard
+  |--- WebSocket connection --------------&gt;|
+  |--- system/hello + session public key -&gt;|
+  |&lt;-- config/set_config (within 30 s) ------|
+  |--- system/ack (ok or error) -----------&gt;|
+  |--- alert/raised (no acknowledgment) --&gt;|
+  |&lt;-- config/get_config -------------------|
+  |--- config/config ---------------------&gt;|
+  |&lt;-- ping (every 30 s) --------------------|
+  |--- pong ------------------------------&gt;|</code></pre>
+          <p>The handshake runs in order: <code>hello</code>, <code>set_config</code>, <code>ack</code>. The agent then sends events and responds to configuration requests.</p>
+          <ul>
+            <li><code>system/hello</code> opens a session and sends the agent's public key.</li>
+            <li><code>alert/raised</code> sends one security event per envelope, without acknowledgment or automatic replay.</li>
+            <li><code>config/get_config</code> requests the current configuration. <code>config/config</code> returns it.</li>
+            <li><code>config/set_config</code> submits a configuration update. The export settings and the host's own allowlisted addresses stay local.</li>
+            <li><code>system/ack</code> reports <code>ok</code> or <code>error</code> for the request.</li>
+          </ul>
+          <h3 id="event">Event structure</h3>
+          <pre tabindex="0"><code>{
+  "version": 2,
+  "task_id": 0,
+  "service": "alert",
+  "operation": "raised",
+  "configuration_id": "...",
+  "user_id": "...",
+  "payload": {
+    "events": [
+      {
+        "source": "ssh_monitor",
+        "ip": "203.0.113.7",
+        "message": "ssh_monitor -&gt; found offenders ip ...",
+        "happened_at": "2026-07-24T10:15:00Z",
+        "details": { "engine": "syslog", "source": "/var/log/auth.log" }
+      }
+    ]
+  }
+}</code></pre>
+          <p><code>source</code> identifies the monitor that emitted an event. Resource events also carry a severity, metric, and threshold.</p>
+          <h3 id="timing">Timing and limits</h3>
+          <ul>
+            <li>Connection timeout is 15 seconds. Handshake messages have a 30-second timeout.</li>
+            <li>Read timeout is 90 seconds and resets on each server <code>ping</code>. The frame size limit is 1 MB.</li>
+            <li>Reconnect starts after 5 seconds and adds 10 seconds per failure, up to 100 seconds. A successful connection resets the counter.</li>
+            <li>The outgoing queue holds 1,024 envelopes and discards overflow. Detection and blocking continue when Dashboard is unreachable.</li>
+          </ul>
+          <p>A changed remote configuration is written to disk and restarts the monitors. The agent opens a new session and retains the local <code>exporter</code> settings and its own allowlisted addresses. See <a href="https://github.com/fridalif/open-defender/blob/main/CLIENT.md">CLIENT.md</a> for the full protocol.</p>
+
+          <h2 id="cli">CLI commands</h2>
+          <p><code>-t</code>, <code>-s</code>, and <code>-h</code> can run without root privileges. The installation, update, and restart commands require root.</p>
+          <pre tabindex="0"><code>Usage: open-defender [options]
+
+Options:
+  -i, --install    Install and start the systemd service
+  -u, --update     Update from GitHub Releases
+  -t, --test       Validate the current configuration
+  -s, --status     List active monitors
+  -r, --restart    Restart the service
+  -h, --help       Show help</code></pre>
+
+          <h2 id="update">Updates</h2>
+          <p><code>-u</code> fetches a GitHub release. The command proposes a version from <code>version.txt</code> in the repository and an architecture based on the installed binary.</p>
+          <pre tabindex="0"><code>sudo open-defender -u</code></pre>
+          <p>Once downloaded, the binary replaces the installed one and the service restarts. If startup fails, the updater restores the previous binary.</p>
+        </article>
+      </div>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="wrap">
+      <p class="footer-brand"><img src="assets/light-defender.webp" width="40" height="40" alt="">Light Defender</p>
+      <div class="footer-links">
+        <a href="https://light-defender.ru/">Light Defender website</a>
+        <a href="#top">Back to top</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

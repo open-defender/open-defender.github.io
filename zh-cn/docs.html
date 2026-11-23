@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="zh-CN" data-page="docs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Open Defender 文档</title>
+  <meta name="description" content="在 Linux 上安装 Open Defender、配置监控模块和 eBPF、启用事件导出，以及查询命令行选项。">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Open Defender 文档">
+  <meta property="og:description" content="在 Linux 上安装 Open Defender、配置监控模块和 eBPF、启用事件导出，以及查询命令行选项。">
+  <link rel="icon" href="../assets/open-defender.webp" type="image/webp">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/language.js"></script>
+</head>
+<body id="top">
+  <a class="skip-link" href="#main">跳转到正文</a>
+  <header class="site-header">
+    <div class="wrap header-layout">
+      <a class="brand" href="index.html"><img src="../assets/open-defender.webp" alt="" width="32" height="32">Open Defender</a>
+      <nav class="site-nav" aria-label="项目导航">
+        <a href="index.html">项目概览</a>
+        <a href="docs.html" aria-current="page"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 4.2C6.3 2.9 4.5 2.6 1.5 3v9.5c3-.4 4.8-.1 6.5 1.2 1.7-1.3 3.5-1.6 6.5-1.2V3c-3-.4-4.8-.1-6.5 1.2V14"/></svg>文档</a>
+        <a href="https://github.com/fridalif/open-defender/releases"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 1.5v8m-3-3 3 3 3-3M2 10v3.5h12V10"/></svg>发布版本</a>
+        <a href="https://github.com/fridalif/open-defender"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.64 7.64 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+      </nav>
+      <nav class="language-nav" aria-label="语言">
+        <svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5"/><ellipse cx="8" cy="8" rx="2.7" ry="6.5"/><path d="M1.5 8h13"/></svg>
+        <a href="../docs.html?lang=en" hreflang="en" lang="en" aria-label="English">EN</a>
+        <a href="../ru/docs.html" hreflang="ru" lang="ru" aria-label="Русский">RU</a>
+        <a href="../zh-cn/docs.html" hreflang="zh-CN" lang="zh-CN" aria-label="简体中文" aria-current="true">中文</a>
+      </nav>
+    </div>
+  </header>
+  <main class="section docs" id="main">
+    <div class="wrap">
+      <h1 class="docs-heading">Open Defender 文档</h1>
+      <p class="intro">Open Defender Linux 代理的安装、配置与运维指南。</p>
+      <div class="docs-layout">
+        <nav class="docs-nav" aria-label="本页目录">
+          <p>本页目录</p>
+          <ul>
+            <li><a href="#quickstart">快速开始</a></li>
+            <li><a href="#install">服务管理</a></li>
+            <li><a href="#config">配置</a></li>
+            <li><a href="#monitors">监控模块</a></li>
+            <li><a href="#network-antirecon">网络反探测</a></li>
+            <li><a href="#commands">命令执行控制</a></li>
+            <li><a href="#grub">配置 BPF LSM</a></li>
+            <li><a href="#export">事件导出</a></li>
+            <li><a href="#protocol">导出协议</a></li>
+            <li><a href="#cli">命令行选项</a></li>
+            <li><a href="#update">更新</a></li>
+          </ul>
+        </nav>
+        <article class="docs-content">
+          <h2 id="quickstart">快速开始</h2>
+          <p>Open Defender 在使用 systemd 的 Linux 系统上运行。可以从 <a href="https://github.com/fridalif/open-defender/releases">GitHub Releases</a> 手动下载对应架构的二进制文件，也可以用以下命令自动识别架构并将文件安装到 <code>/usr/bin/open-defender</code>。</p>
+          <pre tabindex="0"><code>(
+  ARCH=$(uname -m)
+  case "$ARCH" in
+    x86_64)        ARCH=amd64 ;;
+    i386|i686)     ARCH=386 ;;
+    aarch64|arm64) ARCH=arm64 ;;
+    armv7l)        ARCH=arm32 ;;
+    *) echo "不支持的系统架构: $ARCH"; exit 1 ;;
+  esac
+  sudo curl -fL -o /usr/bin/open-defender \
+    "https://github.com/fridalif/open-defender/releases/latest/download/open-defender_$ARCH" &amp;&amp;
+    sudo chmod +x /usr/bin/open-defender
+)</code></pre>
+          <p>安装并启动服务，验证配置，然后查看已启用的监控模块。</p>
+          <pre tabindex="0"><code>sudo open-defender -i
+open-defender -t
+open-defender -s</code></pre>
+
+          <h2 id="install">服务管理</h2>
+          <p>使用 systemd 查看服务状态、重启服务或持续查看日志。也可以用 <code>sudo open-defender -r</code> 重启服务。</p>
+          <pre tabindex="0"><code>systemctl status open-defender
+sudo systemctl restart open-defender
+journalctl -u open-defender -f</code></pre>
+
+          <h2 id="config">配置</h2>
+          <p>代理的配置文件为 <code>/etc/open-defender/config.yaml</code>。可以为各个监控模块设置事件来源和触发阈值。</p>
+
+          <h3 id="modes">监控模式</h3>
+          <ul>
+            <li><code>blocker</code> 检测事件并执行配置的阻止规则。</li>
+            <li><code>logger</code> 记录匹配的事件，允许相关活动继续。</li>
+            <li><code>disabled</code> 关闭该监控模块。</li>
+          </ul>
+
+          <h3 id="params">主要配置项</h3>
+          <ul>
+            <li><code>engine</code> 选择事件来源，可设为 <code>syslog</code>、<code>journal</code> 或 <code>docker</code>。</li>
+            <li><code>log_path</code> 指定 syslog 文件。systemd journal 或 Docker 来源使用 <code>unit_name</code>。</li>
+            <li><code>pattern</code> 是带有 <code>(?P&lt;ip&gt;...)</code> 命名分组的正则表达式。</li>
+            <li><code>tries</code>、<code>window_seconds</code> 和 <code>ban_seconds</code> 分别设置触发阈值、观察时段和封禁时长。</li>
+            <li><code>ip_whitelist</code> 指定不会被封禁的地址。</li>
+            <li><code>resource_monitor</code> 可为 CPU 和内存配置 <code>warning</code> 和 <code>alert</code> 阈值。阈值设为零时关闭对应检查。</li>
+          </ul>
+          <pre tabindex="0"><code>sudo nano /etc/open-defender/config.yaml</code></pre>
+          <p>修改后运行 <code>open-defender -t</code>。该命令读取配置并报告校验错误，不会修改文件。</p>
+
+          <h2 id="monitors">监控模块</h2>
+          <p><code>open-defender -s</code> 会显示启用的模块、模式、日志引擎、来源和阈值。关闭的模块会列在表格下方。</p>
+          <pre tabindex="0"><code>/etc/open-defender/config.yaml
+
+MONITOR           MODE     ENGINE   SOURCE                   TRIES
+ssh_monitor       blocker  syslog   /var/log/auth.log        5 in 300s, ban 900s
+database_monitor  logger   journal  postgresql               5 in 300s
+resource_monitor  enabled  -        /var/log/open-defender/  cpu 60/90, ram 60/90
+
+disabled: web_recon_monitor, web_brute_monitor</code></pre>
+          <dl>
+            <dt><code>ssh_monitor</code></dt><dd>通过认证日志检测 SSH 暴力破解。</dd>
+            <dt><code>web_recon_monitor</code></dt><dd>检测针对 Web 应用的探测行为。</dd>
+            <dt><code>web_brute_monitor</code></dt><dd>检测针对 Web 应用的暴力破解。</dd>
+            <dt><code>database_monitor</code></dt><dd>通过 syslog、journal 或 Docker 日志检测数据库暴力破解。</dd>
+            <dt><code>resource_monitor</code></dt><dd>监控 CPU 和内存，在过载时列出资源占用最高的进程。</dd>
+            <dt><code>network_antirecon</code></dt><dd>使用 eBPF 检测 TCP 和 UDP 端口扫描。</dd>
+            <dt><code>user_command_controller</code></dt><dd>通过 BPF LSM 观察或阻止命令执行。</dd>
+          </dl>
+
+          <h2 id="network-antirecon">网络反探测</h2>
+          <p><code>ebpf_monitors.network_antirecon</code> 通过 eBPF 和 XDP 检测 TCP、UDP 端口扫描。访问拒绝列表中的端口会立即触发事件。模块也会统计同一来源 IP 在观察时段内访问的不同端口数量。</p>
+          <pre tabindex="0"><code>ebpf_monitors:
+  network_antirecon:
+    mode: logger
+    ports_count: 10
+    window_seconds: 300
+    ban_seconds: 900
+    whitelist_ports: [22, 80, 443]
+    blacklist_ports: []</code></pre>
+          <p><code>ports_count</code> 是不同端口数的阈值。设为零可关闭这项检查。<code>whitelist_ports</code> 的优先级高于 <code>blacklist_ports</code>。在 <code>blocker</code> 模式下，来源 IP 会被封禁 <code>ban_seconds</code> 秒。修改后校验配置并重启服务。可先用 <code>logger</code> 查看规则匹配了哪些流量。</p>
+
+          <h2 id="commands">命令执行控制</h2>
+          <p><code>ebpf_monitors.user_command_controller</code> 通过 BPF LSM 检查可执行文件的启动请求。此模块需要 BTF、已启用的 BPF LSM，以及在宿主机初始用户命名空间中以 root 运行的代理。挂载或更新失败时，代理会记录错误并停用控制器，其余模块继续运行。</p>
+          <p>以下示例记录 UID 为 1000 的用户尝试运行 <code>curl</code> 或 <code>wget</code> 的事件。</p>
+          <pre tabindex="0"><code>ebpf_monitors:
+  user_command_controller:
+    mode: logger
+    block_type: positive
+    target_users_ids: ["1000"]
+    target_commands: ["curl", "wget"]</code></pre>
+          <ul>
+            <li>选择 <code>disabled</code> 或省略该配置节都会关闭控制器。<code>logger</code> 允许匹配的请求并发出 Critical (4) 事件。<code>blocker</code> 会以 <code>EPERM</code> 拒绝请求并发出 High (3) 事件。</li>
+            <li><code>target_users_ids</code> 使用进程所属用户命名空间中的 UID。<code>target_commands</code> 匹配可执行文件的基本名称，最长 63 字节。模块不跟踪无需启动独立可执行文件的 shell 内置命令。</li>
+            <li>两个列表均有内容时，用户和命令都必须匹配。单个列表为空时，对应条件不受限制。两个列表均为空时，没有匹配项。</li>
+            <li><code>block_type: positive</code> 选择匹配项。<code>negative</code> 选择其余请求，同时遵守控制器的排除规则。</li>
+          </ul>
+          <p>真实或有效 UID 为 0 的进程始终被排除，包括宿主机和容器用户命名空间中的 root。日志事件仅表示一次执行尝试。</p>
+          <p>未知的用户或挂载命名空间中的执行请求会直接放行，并且不会生成事件。代理在挂载控制器之前发现命名空间，之后每 150 秒再次扫描，每个新发现的命名空间还有 150 秒准备时间。两个命名空间都就绪后才应用策略。</p>
+          <p>校验配置，重启服务，然后检查日志。</p>
+          <pre tabindex="0"><code>open-defender -t
+sudo open-defender -r
+journalctl -u open-defender -f</code></pre>
+
+          <h3 id="grub">通过 GRUB 启用 BPF LSM</h3>
+          <p>先检查内核是否支持 BPF LSM，以及它是否已经启用。如果 LSM 文件不存在，可能是 securityfs 未挂载，或系统无法提供 LSM 信息。</p>
+          <pre tabindex="0"><code>cat /sys/kernel/security/lsm
+cat /proc/cmdline
+grep CONFIG_BPF_LSM /boot/config-$(uname -r)</code></pre>
+          <p>已启用的列表中如果包含 <code>bpf</code>，就无需修改 GRUB。内核需要启用 <code>CONFIG_BPF_LSM=y</code>。若系统将内核配置保存在其他位置，请按发行版的说明检查。</p>
+          <p>备份 GRUB 配置，并确认可以访问恢复控制台。检查 <code>/etc/default/grub</code> 和 <code>/etc/default/grub.d/</code>。如果已有 <code>lsm=</code> 参数，将 <code>bpf</code> 追加到现有列表。否则，将 <code>/sys/kernel/security/lsm</code> 中的列表与 <code>bpf</code> 一起写入 <code>GRUB_CMDLINE_LINUX</code> 中的一个 <code>lsm=</code> 参数。保留其余内核参数。</p>
+          <p>例如，当前列表为 <code>lockdown,yama,integrity,apparmor</code> 且该变量没有其他参数时，可使用以下配置。</p>
+          <pre tabindex="0"><code>GRUB_CMDLINE_LINUX="lsm=lockdown,yama,integrity,apparmor,bpf"</code></pre>
+          <p>在 Debian 和 Ubuntu 上，重新生成 GRUB 配置后重启。其他发行版请按各自的步骤操作。</p>
+          <pre tabindex="0"><code>sudo update-grub
+sudo reboot
+# 重启后执行：
+cat /proc/cmdline
+cat /sys/kernel/security/lsm
+journalctl -u open-defender -b</code></pre>
+          <p>确认 <code>bpf</code> 已启用，并检查服务日志中是否有控制器挂载错误。</p>
+
+          <h2 id="export">事件导出</h2>
+          <p>可选的导出模块通过加密的 WebSocket 协议将事件发送到 <a href="https://light-defender.ru/light-defender-dashboard/">Light Defender Dashboard</a>。没有 <code>exporter</code> 配置节，或将 <code>enabled</code> 设为 <code>false</code> 时，代理在本地运行。</p>
+          <h3>配置方法</h3>
+          <p>Dashboard 生成的配置包含代理标识符和公钥。</p>
+          <pre tabindex="0"><code>exporter:
+  enabled: true
+  endpoint_address: connector.light-defender.ru
+  user_id: &lt;Dashboard 提供的 user_id&gt;
+  config_id: &lt;Dashboard 提供的 config_id&gt;
+  endpoint_rsa_public_key: &lt;Dashboard 公钥，base64&gt;</code></pre>
+          <ul>
+            <li><code>enabled</code> 启用连接器。</li>
+            <li><code>endpoint_address</code> 是 Dashboard 的 WebSocket 地址。</li>
+            <li>每条消息都包含 <code>user_id</code> 和 <code>config_id</code>。</li>
+            <li><code>endpoint_rsa_public_key</code> 是用于加密发出消息的 Dashboard 公钥。</li>
+          </ul>
+          <h3 id="encryption">加密</h3>
+          <p>每个 WebSocket 帧都包含一个加密的 JSON 信封。消息体使用 AES-256-GCM，加密对称密钥使用 RSA-OAEP/SHA-256。</p>
+          <pre tabindex="0"><code>[ RSA(aes_key) ][ nonce, 12 字节 ][ ciphertext ]</code></pre>
+          <p>代理为每次连接生成新的 RSA-2048 密钥对，并通过 <code>system/hello</code> 发送公钥。Dashboard 使用该密钥加密回复。代理发送的帧使用 Dashboard 公钥加密。</p>
+          <h3 id="protocol">消息交换</h3>
+          <pre tabindex="0"><code>代理                                 Dashboard
+  |--- WebSocket 连接 ---------------------&gt;|
+  |--- system/hello + 会话公钥 ------------&gt;|
+  |&lt;-- config/set_config（30 秒内）---------|
+  |--- system/ack（ok 或 error）-----------&gt;|
+  |--- alert/raised（无确认）--------------&gt;|
+  |&lt;-- config/get_config -------------------|
+  |--- config/config ---------------------&gt;|
+  |&lt;-- ping（每 30 秒）---------------------|
+  |--- pong ------------------------------&gt;|</code></pre>
+          <p>握手顺序为 <code>hello</code>、<code>set_config</code> 和 <code>ack</code>。握手完成后，代理会发送事件并响应配置请求。</p>
+          <ul>
+            <li><code>system/hello</code> 开启会话并发送代理公钥。</li>
+            <li><code>alert/raised</code> 每个信封发送一个安全事件，无确认和自动重传。</li>
+            <li><code>config/get_config</code> 请求当前配置，<code>config/config</code> 返回当前配置。</li>
+            <li><code>config/set_config</code> 提交配置更新。导出设置和主机自身列入允许列表的地址保留在本地。</li>
+            <li><code>system/ack</code> 返回请求状态 <code>ok</code> 或 <code>error</code>。</li>
+          </ul>
+          <h3 id="event">事件结构</h3>
+          <pre tabindex="0"><code>{
+  "version": 2,
+  "task_id": 0,
+  "service": "alert",
+  "operation": "raised",
+  "configuration_id": "...",
+  "user_id": "...",
+  "payload": {
+    "events": [
+      {
+        "source": "ssh_monitor",
+        "ip": "203.0.113.7",
+        "message": "ssh_monitor -&gt; found offenders ip ...",
+        "happened_at": "2026-07-24T10:15:00Z",
+        "details": { "engine": "syslog", "source": "/var/log/auth.log" }
+      }
+    ]
+  }
+}</code></pre>
+          <p><code>source</code> 标识生成事件的模块。资源事件还包含严重程度、指标和阈值。</p>
+          <h3 id="timing">超时与限制</h3>
+          <ul>
+            <li>连接超时为 15 秒，每条握手消息的超时为 30 秒。</li>
+            <li>读取超时为 90 秒。服务器发送 <code>ping</code> 时重置计时器。帧大小上限为 1 MB。</li>
+            <li>重连从等待 5 秒开始，每失败一次增加 10 秒，最多等待 100 秒。连接成功后重置计数。</li>
+            <li>发送队列最多容纳 1,024 个信封，超出时丢弃新事件。Dashboard 无法连接时，检测和封禁仍会继续。</li>
+          </ul>
+          <p>远程配置发生变更时，代理会将新配置写入磁盘并重启监控模块。代理会开启新会话，并保留本地 <code>exporter</code> 设置及主机自身列入允许列表的地址。完整协议见 <a href="https://github.com/fridalif/open-defender/blob/main/CLIENT.zh-CN.md">CLIENT.zh-CN.md</a>。</p>
+
+          <h2 id="cli">命令行选项</h2>
+          <p><code>-t</code>、<code>-s</code> 和 <code>-h</code> 无需 root 权限。安装、更新和重启命令需要 root 权限。</p>
+          <pre tabindex="0"><code>用法：open-defender [选项]
+
+选项：
+  -i, --install    安装并启动 systemd 服务
+  -u, --update     从 GitHub Releases 更新
+  -t, --test       验证当前配置
+  -s, --status     列出已启用的监控模块
+  -r, --restart    重启服务
+  -h, --help       显示帮助</code></pre>
+
+          <h2 id="update">更新</h2>
+          <p><code>-u</code> 从 GitHub 获取发布版本。命令根据仓库中的 <code>version.txt</code> 和当前安装的二进制文件，提供默认版本和架构。</p>
+          <pre tabindex="0"><code>sudo open-defender -u</code></pre>
+          <p>下载成功后，更新程序替换已安装的二进制文件并重启服务。如果启动失败，会恢复之前的二进制文件。</p>
+        </article>
+      </div>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="wrap">
+      <p class="footer-brand"><img src="../assets/light-defender.webp" width="40" height="40" alt="">Light Defender</p>
+      <div class="footer-links">
+        <a href="https://light-defender.ru/">Light Defender 官网</a>
+        <a href="#top">返回顶部</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

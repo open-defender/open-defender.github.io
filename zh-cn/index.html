@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-CN" data-page="overview">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Open Defender — 开源 Linux 服务器防护</title>
+  <meta name="description" content="Open Defender 是开源 Linux EDR 代理，支持 SSH、Web 应用和数据库防护、eBPF 监控及资源告警。">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Open Defender — 开源 Linux 服务器防护">
+  <meta property="og:description" content="Open Defender 是开源 Linux EDR 代理，支持 SSH、Web 应用和数据库防护、eBPF 监控及资源告警。">
+  <link rel="icon" href="../assets/open-defender.webp" type="image/webp">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/language.js"></script>
+</head>
+<body id="top">
+  <a class="skip-link" href="#main">跳转到正文</a>
+  <header class="site-header">
+    <div class="wrap header-layout">
+      <a class="brand" href="index.html"><img src="../assets/open-defender.webp" alt="" width="32" height="32">Open Defender</a>
+      <nav class="site-nav" aria-label="项目导航">
+        <a href="index.html" aria-current="page">项目概览</a>
+        <a href="docs.html"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 4.2C6.3 2.9 4.5 2.6 1.5 3v9.5c3-.4 4.8-.1 6.5 1.2 1.7-1.3 3.5-1.6 6.5-1.2V3c-3-.4-4.8-.1-6.5 1.2V14"/></svg>文档</a>
+        <a href="https://github.com/fridalif/open-defender/releases"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 1.5v8m-3-3 3 3 3-3M2 10v3.5h12V10"/></svg>发布版本</a>
+        <a href="https://github.com/fridalif/open-defender"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.64 7.64 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+      </nav>
+      <nav class="language-nav" aria-label="语言">
+        <svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5"/><ellipse cx="8" cy="8" rx="2.7" ry="6.5"/><path d="M1.5 8h13"/></svg>
+        <a href="../index.html?lang=en" hreflang="en" lang="en" aria-label="English">EN</a>
+        <a href="../ru/index.html" hreflang="ru" lang="ru" aria-label="Русский">RU</a>
+        <a href="../zh-cn/index.html" hreflang="zh-CN" lang="zh-CN" aria-label="简体中文" aria-current="true">中文</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap hero-layout">
+        <div>
+          <h1 id="hero-title">Linux 服务器防护 <span>一个代理即可</span></h1>
+          <p class="intro">Open Defender 是用 Go 编写的开源 EDR 代理，可检测针对 SSH、Web 应用和数据库的暴力破解，监控资源消耗，并通过 eBPF 观察网络及进程活动。</p>
+          <div class="actions">
+            <a class="button button-primary" href="docs.html#quickstart"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1.2" y="2" width="13.6" height="12" rx="1.5"/><path d="m4 5.5 2.5 2.5L4 10.5m4.4 0H12"/></svg>快速开始</a>
+            <a class="button" href="https://github.com/fridalif/open-defender/releases/latest"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 1.5v8m-3-3 3 3 3-3M2 10v3.5h12V10"/></svg>下载发布版本</a>
+            <a class="button" href="https://github.com/fridalif/open-defender"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.64 7.64 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>源代码</a>
+          </div>
+          <ul class="project-facts">
+            <li><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1.5" y="2.5" width="13" height="4.5" rx="1"/><rect x="1.5" y="9" width="13" height="4.5" rx="1"/><path d="M4 4.75h.1M4 11.25h.1"/></svg>Linux + systemd</li>
+            <li><a href="https://github.com/fridalif/open-defender/blob/main/LICENSE"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 2v12m-3 0h6M2 4h12M3.5 4 1 9h5l-2.5-5Zm9 0L10 9h5l-2.5-5Z"/></svg>MIT 许可证</a></li>
+          </ul>
+        </div>
+        <figure class="hero-figure">
+          <img src="../assets/open-defender.webp" alt="" width="928" height="928" fetchpriority="high">
+        </figure>
+      </div>
+    </section>
+
+    <section class="section quickstart" id="quickstart" aria-labelledby="quick-title">
+      <div class="wrap quick-layout">
+        <div>
+          <h2 id="quick-title">快速开始</h2>
+          <p class="intro">下载与系统架构匹配的二进制文件，将其放到 <code>/usr/bin/open-defender</code>。然后安装 systemd 服务，检查配置并查看启用的监控模块。</p>
+          <p class="intro">发布包架构 <code>amd64</code> <code>386</code> <code>arm64</code> <code>arm32</code></p>
+          <div class="actions"><a class="button" href="docs.html#quickstart"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 4.2C6.3 2.9 4.5 2.6 1.5 3v9.5c3-.4 4.8-.1 6.5 1.2 1.7-1.3 3.5-1.6 6.5-1.2V3c-3-.4-4.8-.1-6.5 1.2V14"/></svg>查看安装指南</a></div>
+        </div>
+        <figure class="terminal">
+          <figcaption><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1.2" y="2" width="13.6" height="12" rx="1.5"/><path d="m4 5.5 2.5 2.5L4 10.5m4.4 0H12"/></svg>Linux 终端</figcaption>
+          <pre tabindex="0"><code>sudo open-defender -i
+open-defender -t
+open-defender -s</code></pre>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="features-title">
+      <div class="wrap">
+        <h2 id="features-title">Open Defender 能监控什么</h2>
+        <p class="intro">代理在本地处理事件。可在 <code>/etc/open-defender/config.yaml</code> 中配置事件来源、阈值和允许列表。</p>
+        <div class="card-grid">
+          <article class="card">
+            <h3>SSH 暴力破解</h3>
+            <p>统计登录失败次数，达到配置的阈值时可临时封禁来源 IP。</p>
+          </article>
+          <article class="card">
+            <h3>Web 应用</h3>
+            <p>通过 Web 服务器日志识别探测和暴力破解行为。允许列表可防止可信地址被封禁。</p>
+          </article>
+          <article class="card">
+            <h3>数据库</h3>
+            <p>从 syslog、systemd journal 或 Docker 日志中检测反复出现的认证失败。</p>
+          </article>
+          <article class="card">
+            <h3>资源使用</h3>
+            <p>监控 CPU 和内存使用阈值，并在负载过高时列出资源占用最高的进程。</p>
+          </article>
+          <article class="card">
+            <h3>eBPF 监控</h3>
+            <p>通过 XDP 检测 TCP 和 UDP 端口扫描。在支持 BPF LSM 的内核上控制命令执行。</p>
+          </article>
+          <article class="card">
+            <h3>事件导出</h3>
+            <p>启用导出后，通过加密的 WebSocket 连接向 Light Defender Dashboard 发送事件。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark" aria-labelledby="modes-title">
+      <div class="wrap info-layout">
+        <div>
+          <h2 id="modes-title">选择响应模式</h2>
+          <p class="intro">SSH、Web、数据库和兼容的 eBPF 监控模块可分别选择模式。可以先记录事件，确认规则的匹配情况，再启用阻止功能。</p>
+        </div>
+        <dl class="mode-list">
+          <div><dt><code>blocker</code></dt><dd>检测事件并执行该模块的阻止规则。</dd></div>
+          <div><dt><code>logger</code></dt><dd>记录匹配的事件，允许相关活动继续。</dd></div>
+          <div><dt><code>disabled</code></dt><dd>关闭该监控模块。</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section" aria-label="代码与社区">
+      <div class="wrap community-layout">
+        <article class="community-panel">
+          <h2>本地运行与 Dashboard</h2>
+          <p class="intro">Dashboard 无法连接时，本地检测和阻止功能仍会运行。启用导出功能后，可集中查看多台服务器的事件，并管理代理配置。</p>
+          <ul class="link-list">
+            <li><a href="https://light-defender.ru/light-defender-dashboard/"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6 3H3.5A1.5 1.5 0 0 0 2 4.5v8A1.5 1.5 0 0 0 3.5 14h8a1.5 1.5 0 0 0 1.5-1.5V10M9 2h5v5m0-5L7 9"/></svg>Light Defender Dashboard</a></li>
+            <li><a href="docs.html#export"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 4.2C6.3 2.9 4.5 2.6 1.5 3v9.5c3-.4 4.8-.1 6.5 1.2 1.7-1.3 3.5-1.6 6.5-1.2V3c-3-.4-4.8-.1-6.5 1.2V14"/></svg>配置事件导出</a></li>
+          </ul>
+        </article>
+        <article class="community-panel">
+          <h2>代码与社区</h2>
+          <p class="intro">Open Defender 采用 MIT 许可证。可通过 GitHub Issues 报告问题和提出建议，也可以提交拉取请求来贡献代码。</p>
+          <ul class="link-list">
+            <li><a href="https://github.com/fridalif/open-defender/issues"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.3"/><path d="M8 4.5v4m0 2.6h.01"/></svg>GitHub Issues</a></li>
+            <li><a href="https://github.com/fridalif/open-defender/pulls"><svg class="icon icon-outline" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="4" cy="3" r="1.4"/><circle cx="4" cy="13" r="1.4"/><circle cx="12" cy="13" r="1.4"/><path d="M4 4.4v7.2m8 0V7a2.5 2.5 0 0 0-2.5-2.5H8l2-2m-2 2 2 2"/></svg>拉取请求</a></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="wrap">
+      <p class="footer-brand"><img src="../assets/light-defender.webp" width="40" height="40" alt="">Light Defender</p>
+      <div class="footer-links">
+        <a href="https://light-defender.ru/">Light Defender 官网</a>
+        <a href="#top">返回顶部</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
