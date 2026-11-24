@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://open-defender.github.io/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://open-defender.github.io/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://open-defender.github.io/ru/" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://open-defender.github.io/zh-cn/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://open-defender.github.io/" />
+  </url>
+  <url>
+    <loc>https://open-defender.github.io/ru/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://open-defender.github.io/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://open-defender.github.io/ru/" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://open-defender.github.io/zh-cn/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://open-defender.github.io/" />
+  </url>
+  <url>
+    <loc>https://open-defender.github.io/zh-cn/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://open-defender.github.io/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://open-defender.github.io/ru/" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://open-defender.github.io/zh-cn/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://open-defender.github.io/" />
+  </url>
+  <url>
+    <loc>https://open-defender.github.io/docs.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://open-defender.github.io/docs.html" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://open-defender.github.io/ru/docs.html" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://open-defender.github.io/zh-cn/docs.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://open-defender.github.io/docs.html" />
+  </url>
+  <url>
+    <loc>https://open-defender.github.io/ru/docs.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://open-defender.github.io/docs.html" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://open-defender.github.io/ru/docs.html" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://open-defender.github.io/zh-cn/docs.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://open-defender.github.io/docs.html" />
+  </url>
+  <url>
+    <loc>https://open-defender.github.io/zh-cn/docs.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://open-defender.github.io/docs.html" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://open-defender.github.io/ru/docs.html" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://open-defender.github.io/zh-cn/docs.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://open-defender.github.io/docs.html" />
+  </url>
+</urlset>

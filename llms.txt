@@ -1,0 +1,15 @@
+# Open Defender
+
+> Open Defender is an open-source endpoint detection and response (EDR) agent for Linux servers. It provides SSH, web application, and database protection, eBPF monitoring, and resource alerts.
+
+## Documentation
+
+- [Documentation (English)](https://open-defender.github.io/docs.html): Installation, service management, monitoring configuration, event export, and CLI commands.
+- [Documentation (Russian)](https://open-defender.github.io/ru/docs.html): Installation, service management, monitoring configuration, event export, and CLI commands.
+- [Documentation (Simplified Chinese)](https://open-defender.github.io/zh-cn/docs.html): Installation, service management, monitoring configuration, event export, and CLI commands.
+
+## Project overview
+
+- [Open Defender (English)](https://open-defender.github.io/): Features, response modes, and options for running locally or connecting a dashboard.
+- [Open Defender (Russian)](https://open-defender.github.io/ru/): Features, response modes, and options for running locally or connecting a dashboard.
+- [Open Defender (Simplified Chinese)](https://open-defender.github.io/zh-cn/): Features, response modes, and options for running locally or connecting a dashboard.
